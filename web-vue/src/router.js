@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// import Home from './views/Home.vue'
-import Home from './views/Generator/OrgGenerator.vue'
+import Home from './views/Home.vue'
+// import Home from './views/Generator/OrgGenerator.vue'
 
 // import Login from './views/AppUser/Login.vue'
 import TheLogin from './views/TheLogin/TheLoginVuetify'

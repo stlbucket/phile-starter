@@ -90,12 +90,16 @@ https://docs.microsoft.com/en-us/azure/postgresql/concepts-ssl-connection-securi
 # running the server
 in a new terminal, go to the phile-starter/api directory
 
-to use the dev db server on azure
-```
-yarn serve-az-tmp
-```
-
 for local db
 ```
+yarn serve
+```
+
+# running the web app
+in a new terminal, go to the phile-starter/web-vue directory
+
+```
+yarn
+
 yarn serve
 ```
