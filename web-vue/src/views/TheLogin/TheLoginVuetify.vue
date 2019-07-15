@@ -13,6 +13,12 @@
       v-model="password"
     ></v-text-field>
     <v-btn @click="login">Login</v-btn>
+    <hr>
+    <h2>Other logins - same password</h2>
+    <ul>
+      <li>appsuperadmin</li>
+      <li>testUser001</li>
+    </ul>
   </div>
 </template>
 
