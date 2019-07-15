@@ -62,8 +62,6 @@ once postgres is ready, as indicated by success of the psql connection, deploy t
 yarn dbDeployLocal
 ```
 
-open a terminal in the phile_starter/api 
-
 ## directory structure
 
 ### ansible
@@ -81,11 +79,6 @@ scripts to define and the datbase using sqitch
 ### web-vue
 a starter web app that demonstrates login, row-level-security, app modules, and more.  could be basis for a new project or can be thrown away in favor of a different ui
 
-
-## openssl cert setup
-to connect to the test database, follow these instructions to obtain a cert file:
-
-https://docs.microsoft.com/en-us/azure/postgresql/concepts-ssl-connection-security#applications-that-require-certificate-verification-for-ssl-connectivity
 
 # running the server
 in a new terminal, go to the phile-starter/api directory
