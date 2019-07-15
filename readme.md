@@ -74,7 +74,7 @@ node-postgraphile graphql server
 ansible-playbooks to aid in setup on the azure platform
 
 ### db
-scripts to define and the datbase using sqitch
+scripts to define and manage the datbase using sqitch
 
 ### web-vue
 a starter web app that demonstrates login, row-level-security, app modules, and more.  could be basis for a new project or can be thrown away in favor of a different ui
