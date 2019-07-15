@@ -1,0 +1,12 @@
+- hosts: localhost
+  connection: local
+  vars_files: 
+    - ./config.yml
+  tasks:
+  - name: deploy database local
+    shell: >
+      cd ../release/ && 
+      sqitch deploy
+      --target {{ sqitch_target_local }}
+      --chdir {{ item }}
+    loop: "{{ schemata }}"

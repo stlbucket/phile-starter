@@ -1,0 +1,86 @@
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: update instances
+    shell: >
+      gcloud compute instances update {{ item.name }} --no-deletion-protection --zone {{ item.zone }}
+    with_items:
+      - {name: build-default-61676, zone: asia-east1-a}
+      - {name: build-default-93146, zone: asia-east1-a}
+      - {name: dev-default-24208, zone: asia-east1-a}
+      - {name: firewall-default-43090, zone: asia-east1-a}
+      - {name: firewall-default-92824, zone: asia-east1-a}
+      - {name: gke-cluster-default-72682, zone: asia-east1-a}
+      - {name: instance-default-8666, zone: asia-east1-a}
+      - {name: jenkins-default-20586, zone: asia-east1-a}
+      - {name: jenkins-default-61315, zone: asia-east1-a}
+      - {name: jenkins-default-80309, zone: asia-east1-a}
+      - {name: build-default-97513, zone: asia-east2-a}
+      - {name: gke-cluster-default-20948, zone: asia-east2-a}
+      - {name: dev-default-69935, zone: asia-northeast1-a}
+      - {name: firewall-default-25064, zone: asia-northeast1-a}
+      - {name: firewall-default-65370, zone: asia-northeast1-a}
+      - {name: frontend-default-49627, zone: asia-northeast1-a}
+      - {name: frontend-default-88444, zone: asia-northeast1-a}
+      - {name: gke-cluster-default-86925, zone: asia-northeast1-a}
+      - {name: prod-default-19290, zone: asia-northeast1-a}
+      - {name: staging-default-39258, zone: asia-northeast1-a}
+      - {name: staging-default-39691, zone: asia-northeast1-a}
+      - {name: www-default-16167, zone: asia-northeast1-a}
+      - {name: www-default-895, zone: asia-northeast1-a}
+      - {name: frontend-default-45997, zone: asia-northeast2-a}
+      - {name: staging-default-3760, zone: asia-northeast2-a}
+      - {name: build-default-71122, zone: asia-south1-a}
+      - {name: firewall-default-36491, zone: asia-south1-a}
+      - {name: backup-default-21929, zone: asia-southeast1-a}
+      - {name: build-default-70563, zone: asia-southeast1-a}
+      - {name: dev-default-39270, zone: asia-southeast1-a}
+      - {name: firewall-default-89982, zone: asia-southeast1-a}
+      - {name: frontend-default-90919, zone: asia-southeast1-a}
+      - {name: gke-cluster-default-10035, zone: asia-southeast1-a}
+      - {name: prod-default-25667, zone: asia-southeast1-a}
+      - {name: www-default-11956, zone: asia-southeast1-a}
+      - {name: www-default-39661, zone: asia-southeast1-a}
+      - {name: www-default-47204, zone: asia-southeast1-a}
+      - {name: build-default-40267, zone: australia-southeast1-a}
+      - {name: gke-cluster-default-9406, zone: australia-southeast1-a}
+      - {name: application-default-9580, zone: europe-north1-a}
+      - {name: www-default-93406, zone: europe-north1-a}
+      - {name: build-default-25305, zone: europe-west1-b}
+      - {name: build-default-72621, zone: europe-west1-b}
+      - {name: firewall-default-13502, zone: europe-west1-b}
+      - {name: frontend-default-56658, zone: europe-west1-b}
+      - {name: frontend-default-83412, zone: europe-west1-b}
+      - {name: gke-cluster-default-3174, zone: europe-west1-b}
+      - {name: gke-cluster-default-43231, zone: europe-west1-b}
+      - {name: gke-cluster-default-86046, zone: europe-west1-b}
+      - {name: instance-default-40085, zone: europe-west1-b}
+      - {name: jenkins-default-36561, zone: europe-west1-b}
+      - {name: jenkins-default-53077, zone: europe-west1-b}
+      - {name: build-default-34680, zone: europe-west2-a}
+      - {name: frontend-default-88783, zone: europe-west2-a}
+      - {name: gke-cluster-default-29204, zone: europe-west3-a}
+      - {name: staging-default-45216, zone: europe-west3-a}
+      - {name: backup-default-58347, zone: europe-west4-a}
+      - {name: build-default-11776, zone: europe-west4-a}
+      - {name: build-default-13339, zone: europe-west4-a}
+      - {name: build-default-16347, zone: europe-west4-a}
+      - {name: build-default-23456, zone: europe-west4-a}
+      - {name: build-default-25674, zone: europe-west4-a}
+      - {name: build-default-27218, zone: europe-west4-a}
+      - {name: build-default-30308, zone: europe-west4-a}
+      - {name: build-default-31629, zone: europe-west4-a}
+      - {name: build-default-31901, zone: europe-west4-a}
+      - {name: build-default-32445, zone: europe-west4-a}
+      - {name: build-default-4068, zone: europe-west4-a}
+      - {name: build-default-5014, zone: europe-west4-a}
+      - {name: build-default-55243, zone: europe-west4-a}
+      - {name: build-default-902, zone: europe-west4-a}
+      - {name: build-default-9247, zone: europe-west4-a}
+      - {name: frontend-default-53251, zone: europe-west4-a}
+      - {name: staging-default-79317, zone: europe-west4-a}
+      - {name: instance-default-29337, zone: europe-west6-a}
+      - {name: www-default-18666, zone: europe-west6-a}
+      - {name: dev-default-19159, zone: northamerica-northeast1-a}
+      - {name: www-default-35542, zone: northamerica-northeast1-a}
+      - {name: staging-default-8642, zone: southamerica-east1-a}

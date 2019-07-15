@@ -1,0 +1,1 @@
+TEST_DATABASE_URL=postgres://postgres:1234@0.0.0.0/pg_phile_starter jest release/leaf-fn/_test/db/capture-mme-event.spec.js | pino-pretty

@@ -1,0 +1,17 @@
+schemata:
+  - app-roles
+  - shard
+  - auth
+  - auth-fn 
+  - util-fn
+  - org
+  - org-fn
+  - evt
+  - evt-fn
+  - app
+  - msg
+  - prj
+  - soro
+  - leaf-fn
+  - core-data
+  - core-data-test

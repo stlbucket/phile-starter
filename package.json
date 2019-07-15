@@ -1,0 +1,14 @@
+{
+  "name": "phile-starter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@ssh.dev.azure.com:v3/dauntlessinc/phile-starter/phile-starter",
+  "author": "stlbucket <stlbucket@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "devSetup": "ansible-playbook ansible/dev-setup.yml --verbose",
+    "dbDeployLocal": "ansible-playbook db/ansible/deploy-database.local.yml --verbose",
+    "pg10": "./docker-run-pg-10.sh",  
+    "psql": "./psql-docker.sh"
+  }
+}

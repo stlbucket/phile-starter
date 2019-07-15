@@ -1,0 +1,15 @@
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: list service accounts
+    shell: >
+      gcloud iam service-accounts list
+
+  - name: list keys
+    shell: >
+      gcloud iam service-accounts keys list --iam-account {{ item }}
+    with_items:
+        - soro-webapp-164421@appspot.gserviceaccount.com
+        - 494000616202-compute@developer.gserviceaccount.com
+
+

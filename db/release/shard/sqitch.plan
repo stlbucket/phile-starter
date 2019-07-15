@@ -1,0 +1,5 @@
+%syntax-version=1.0.0
+%project=shard
+%uri=phile-starter/shard
+
+0010-shard [app-roles:0010-roles] 2018-04-11T19:23:32Z Kevin Burkett <stlbucket@gmail.com> # support for sharding id

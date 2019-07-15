@@ -1,0 +1,7 @@
+docker run \
+--rm \
+--name pg10 \
+-v {{ pg10_data_path }}:/var/lib/postgresql/data \
+-e POSTGRES_PASSWORD=1234 \
+-p 5432:5432 \
+-d postgres:10-alpine

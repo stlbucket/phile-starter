@@ -1,0 +1,16 @@
+sqitch_target_local: db:pg://postgres:1234@0.0.0.0/pg_phile_starter
+schemata:
+  - app-roles
+  - shard
+  - auth
+  - auth-fn 
+  - util-fn
+  - org
+  - org-fn
+  - evt
+  - evt-fn
+  - app
+  - msg
+  - prj
+  - core-data
+  - core-data-test

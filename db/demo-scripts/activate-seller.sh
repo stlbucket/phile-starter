@@ -1,0 +1,1 @@
+TEST_DATABASE_URL=postgres://postgres:1234@0.0.0.0/pg_phile_starter jest release/soro/_test/db/activate-seller.spec.js | pino-pretty

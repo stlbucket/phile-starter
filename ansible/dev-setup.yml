@@ -1,0 +1,64 @@
+- hosts: localhost
+  connection: local
+  vars:
+    required_node_major_version: 10
+    required_docker_major_version: 18
+  vars_files: 
+    - ./config.yml
+  tasks:
+    - name: get node version
+      shell: >
+        node -v
+      register: nv
+
+    - name: extract node_version
+      set_fact:
+        node_version: "{{ nv.stdout.split('.')[0].replace('v', '') }}"
+
+    - name: node version
+      debug:
+        msg: "node major version: {{ node_version }}"
+
+    - name: fail if version not {{ required_node_major_version }} or above
+      fail:
+        msg: node version {{ required_node_major_version }} or above required
+      when: (node_version | int) < required_node_major_version
+
+    - name: get docker version
+      shell: >
+        docker -v
+      register: nv
+
+    - name: extract docker_version
+      set_fact:
+        docker_version: "{{ nv.stdout.split('.')[0].split(' ')[2] }}"
+
+    - name: docker version
+      debug:
+        msg: "node major version: {{ docker_version }}"
+
+    - name: fail if version not {{ required_docker_major_version }} or above
+      fail:
+        msg: docker version {{ required_docker_major_version }} or above required
+      when: (docker_version | int) < required_docker_major_version
+
+    - name: setup sqitch script
+      shell: >
+        cd .. && curl -L https://git.io/fAX6Z -o sqitch && chmod +x sqitch
+    
+    - name: remove -it option from sqitch
+      replace:
+          path: ../sqitch
+          regexp: 'docker run -it'
+          replace: 'docker run'
+          backup: no
+
+    - name: create docker-run-pg-10.sh
+      template:
+        src: ./docker-run-pg-10-template.j2
+        dest: ../docker-run-pg-10.sh
+
+    - name: chown docker run +x
+      file:
+        path: ../docker-run-pg-10.sh
+        mode: a+x

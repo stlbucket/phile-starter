@@ -1,0 +1,2 @@
+pg10_data_path: [PATH TO YOUR PG 10 DATA DIRECTORY]
+sqitch_target_local: db:pg://postgres:1234@0.0.0.0/phile_starter

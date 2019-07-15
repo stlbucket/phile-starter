@@ -1,0 +1,33 @@
+{
+  "name": "db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "TEST_DATABASE_URL=postgres://postgres:1234@0.0.0.0/pg_phile_starter jest | pino-pretty"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.5",
+    "moment": "^2.24.0",
+    "pg": "^7.11.0",
+    "pino": "^5.12.6",
+    "pino-pretty": "^3.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "babel-jest": "^24.8.0",
+    "chai": "^4.2.0",
+    "jest": "^24.8.0"
+  },
+  "jest": {
+    "verbose": true
+  }
+}

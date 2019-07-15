@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+database="pg_phile_starter"
+hostname="0.0.0.0"
+
+packages=(
+  app-roles
+  shard
+  auth
+  auth-fn 
+  org
+  app
+  prj
+  core-data
+  core-data-test
+)
+
+# app
+# org
+# org-fn
+# prj
+# core-data
+# core-data-test
+#  app-jobs
+#  app-jobs-fn
+#  evt
+#  evt-fn
+#  wf
+#  msg
+#  prj
+#  tunz
+#  bimo
+#  ex
+
+
+#packages=(
+#  app-jobs
+#  prj
+#  core-data
+#  core-data-test
+#)

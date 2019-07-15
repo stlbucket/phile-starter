@@ -1,0 +1,6 @@
+%syntax-version=1.0.0
+%project=util
+%uri=phile-starter/util
+
+0010-schema [auth:0020-schema] 2018-04-22T20:55:22Z Kevin Burkett <stlbucket@gmail.com> # schema for util functions
+0020-trim-text [0010-schema] 2018-04-22T20:55:22Z Kevin Burkett <stlbucket@gmail.com> # trim leading/trailing whitespace from text 

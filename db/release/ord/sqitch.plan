@@ -1,0 +1,7 @@
+%syntax-version=1.0.0
+%project=ord
+%uri=phile-starter/ord
+
+0010-schema [auth:0020-schema] 2018-04-22T20:55:22Z Kevin Burkett <stlbucket@gmail.com> # schema for event driven microservice support
+0020-order-info [0010-schema] 2018-04-22T21:04:59Z Kevin Burkett <stlbucket@gmail.com> # top level info about an order
+0025-order-line-item [0020-order-info] 2018-04-22T21:04:59Z Kevin Burkett <stlbucket@gmail.com> # line item for an order

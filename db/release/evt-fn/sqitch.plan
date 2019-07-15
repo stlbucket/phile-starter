@@ -1,0 +1,11 @@
+%syntax-version=1.0.0
+%project=evt-fn
+%uri=sqitch-phile/evt-fn
+
+0010-schema [evt:0010-schema] 2018-04-23T16:21:04Z Kevin Burkett <stlbucket@gmail.com> # schema for event functions
+0020-vw_evt_processing_status [0010-schema] 2018-04-23T16:22:14Z Kevin Burkett <stlbucket@gmail.com> # controls event processing status
+0030-consume_event [0010-schema] 2018-04-23T16:23:39Z Kevin Burkett <stlbucket@gmail.com> # function to manage consuming events
+0031-capture_event [0010-schema] 2018-04-23T16:23:39Z Kevin Burkett <stlbucket@gmail.com> # function to capture an event
+0040-consume_all_events [0030-consume_event] 2018-04-23T16:23:39Z Kevin Burkett <stlbucket@gmail.com> # function to consume all events of a type
+0050-get-evt-consumption [0030-consume_event] 2018-04-23T16:23:39Z Kevin Burkett <stlbucket@gmail.com> # get an evt consumption by id
+0060-get-evt [0030-consume_event] 2018-04-23T16:23:39Z Kevin Burkett <stlbucket@gmail.com> # get an evt by id

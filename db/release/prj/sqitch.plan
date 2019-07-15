@@ -1,0 +1,17 @@
+%syntax-version=1.0.0
+%project=prj
+%uri=phile-starter/prj
+
+0010-schema [org:0060-facility] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # prj schema
+0020-project [0010-schema] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # project table
+0030-task [0020-project] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # task table
+0040-task-role [0030-task] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # task_role table
+0050-contact-task-role [0040-task-role] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # contact_task_role table
+0060-milestone [0050-contact-task-role] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # milestone table
+0070-prj-note [0060-milestone] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # prj-note table
+0080-task-note [0070-prj-note] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # task-note table
+0090-project-note [0080-task-note] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # project-note table
+0100-milestone-note [0090-project-note] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # milestone table
+0110-task-dependency [0100-milestone-note] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # task-dependency table
+0120-milestone-dependency [0110-task-dependency] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # milestone-dependency table
+9000-relationships [0120-milestone-dependency] 2018-04-11T19:25:04Z Kevin Burkett <stlbucket@gmail.com> # relationships
