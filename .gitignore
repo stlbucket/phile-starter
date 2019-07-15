@@ -10,3 +10,5 @@ ansible/config.yml
 
 *.crt
 *.pem
+
+config.yml

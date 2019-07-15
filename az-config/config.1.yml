@@ -1,7 +1,7 @@
 # THESE ARE THE VARIABLES YOU NEED TO CHANGE
-organization_user: stlbucket
-organization_name: fnbucket
-organization_url: https://dev.azure.com/fnbucket
+organization_user: YOUR_ORG_USER
+organization_name: YOUR_ORG_NAME
+organization_url: YOUR_ORG_URL
 project_name: ps-demo
 project_no_hyphens: psdemo   #
 db_name: ps_demo
@@ -17,7 +17,6 @@ schemata:
   - org
   - org-fn
   - app
-  - prj
   - core-data
   - core-data-test
 # THOSE WERE THE VARIABLES YOU NEED TO CHANGE

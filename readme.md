@@ -78,21 +78,6 @@ ansible-playbooks to aid in setup on the azure platform
 ### db
 scripts to define and the datbase using sqitch
 
-### drpFunctions
-repo for durable-functions related to DRP - may go away
-
-### giant-phile
-repo used to explore possibilities with direct import of some data from gian - may go away
-
-### return-manifest
-repo for classic javascript implementation of same concepts as drpFunctions - may go away
-
-### sync
-repo for the traceability-capture sync process to capture leaf/biotrack/metrc data
-
-### tcFunctions
-repo to explore sync as durable-functions.  not a good idea.  will go away
-
 ### web-vue
 a starter web app that demonstrates login, row-level-security, app modules, and more.  could be basis for a new project or can be thrown away in favor of a different ui
 
