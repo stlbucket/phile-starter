@@ -84,6 +84,8 @@ in a new terminal, go to the phile-starter/api directory
 
 for local db
 ```
+yarn
+
 yarn serve
 ```
 
