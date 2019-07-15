@@ -79,8 +79,7 @@ scripts to define and manage the datbase using sqitch
 ### web-vue
 a starter web app that demonstrates login, row-level-security, app modules, and more.  could be basis for a new project or can be thrown away in favor of a different ui
 
-
-# running the server
+## running the server
 in a new terminal, go to the phile-starter/api directory
 
 for local db
@@ -88,7 +87,7 @@ for local db
 yarn serve
 ```
 
-# running the web app
+## running the web app
 in a new terminal, go to the phile-starter/web-vue directory
 
 ```
