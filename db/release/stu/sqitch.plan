@@ -1,0 +1,9 @@
+%syntax-version=1.0.0
+%project=stu
+%uri=phile-starter/stu
+
+0010-schema [auth:0020-schema] 2018-04-22T20:55:22Z Kevin Burkett <stlbucket@gmail.com> # schema for class demo
+0020-class [0010-schema] 2018-04-22T21:09:12Z Kevin Burkett <stlbucket@gmail.com> # an academic course
+0030-student [0010-schema] 2019-07-18T19:07:43Z Kevin Burkett <stlbucket@gmail.com> # a person who attends classes
+0040-enrollment [0010-schema] 2019-07-18T21:45:57Z Kevin Burkett <stlbucket@gmail.com> # student class relation
+0200-stu-functions [0010-schema] 2019-07-18T19:14:36Z Kevin Burkett <stlbucket@gmail.com> # functions for demo
