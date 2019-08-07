@@ -7,6 +7,7 @@ BEGIN;
     id bigint UNIQUE NOT NULL DEFAULT shard_1.id_generator(),
     class_id bigint not null,
     student_id bigint not null,
+    CONSTRAINT uq_enrollment UNIQUE(class_id, student_id),
     CONSTRAINT pk_enrollment PRIMARY KEY (id)
   );
   --||--

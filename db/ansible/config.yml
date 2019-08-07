@@ -12,5 +12,6 @@ schemata:
   - app
   - msg
   - prj
+  - tunz
   - core-data
   - core-data-test

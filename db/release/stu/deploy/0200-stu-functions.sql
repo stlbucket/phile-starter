@@ -212,4 +212,51 @@ BEGIN;
   $$ language plpgsql strict security definer;
   --||--
   GRANT execute ON FUNCTION stu.delete_student(bigint) TO public;
+
+
+  create or replace function stu.create_demo_data() returns setof stu.student AS $$
+  DECLARE
+    _student stu.student;
+  BEGIN
+    perform stu.create_class('Physics', 'Intro to Physics');
+    perform stu.create_class('Geometry', 'Intro to Geometry');
+    perform stu.create_class('Music', 'Intro to Music');
+    perform stu.create_class('Gardening', 'Intro to Gardening');
+    perform stu.create_class('Cooking', 'Intro to Cooking');
+
+    perform stu.create_student('Tony', '4/14/1955', '{}');
+    perform stu.create_student('Paulie', '9/15/1953', '{}');
+    perform stu.create_student('Johnny', '2/2/1954', '{}');
+
+
+    for _student in
+      select * from stu.student
+    loop
+      insert into stu.enrollment(student_id, class_id)
+      select
+        _student.id,
+        (SELECT id FROM stu.class OFFSET floor(random()*N) LIMIT 1)
+      on conflict do nothing
+      ;
+
+      insert into stu.enrollment(student_id, class_id)
+      select
+        _student.id,
+        (SELECT id FROM stu.class OFFSET floor(random()*N) LIMIT 1)
+      on conflict do nothing
+      ;
+
+      insert into stu.enrollment(student_id, class_id)
+      select
+        _student.id,
+        (SELECT id FROM stu.class OFFSET floor(random()*N) LIMIT 1)
+      on conflict do nothing
+      ;
+    end loop;
+
+    return query select * from stu.student;
+  END;    
+  $$ language plpgsql strict security definer;
+  --||--
+  GRANT execute ON FUNCTION stu.create_demo_data() TO public;
 COMMIT;

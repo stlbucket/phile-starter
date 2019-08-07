@@ -8,5 +8,6 @@ BEGIN;
   drop function stu.create_student(text,date,bigint[]);
   drop function stu.update_student(bigint,text,date,bigint[]);
   drop function stu.delete_student(bigint);
+  drop function stu.create_demo_data();
 
 COMMIT;
