@@ -9,6 +9,7 @@ BEGIN;
     created_at timestamp NOT NULL DEFAULT current_timestamp,
     updated_at timestamp NOT NULL,
     song_id bigint NULL,
+    studio_session_id bigint not null,
     title text default 'untitled',
     other_titles text[],
     key text,
@@ -21,6 +22,8 @@ BEGIN;
   ALTER TABLE tunz.recording ADD CONSTRAINT fk_recording_app_tenant FOREIGN KEY ( app_tenant_id ) REFERENCES auth.app_tenant( id );
   --||--
   ALTER TABLE tunz.recording ADD CONSTRAINT fk_recording_song FOREIGN KEY ( song_id ) REFERENCES tunz.song( id );
+  --||--
+  ALTER TABLE tunz.recording ADD CONSTRAINT fk_recording_studio_session FOREIGN KEY ( studio_session_id ) REFERENCES tunz.studio_session( id );
 
   --||--
   CREATE FUNCTION tunz.fn_timestamp_update_recording() RETURNS trigger AS $$

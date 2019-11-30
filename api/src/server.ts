@@ -1,11 +1,11 @@
 // POSTGRAPHILE
 import express from "express";
-import pgdbi from "@graphile-contrib/pgdbi";
+// import pgdbi from "@graphile-contrib/pgdbi";
 import { postgraphile, makePluginHook } from "postgraphile";
 import mutationHooks from "./mutation-hooks";
 
 const app = express();
-const pluginHook = makePluginHook([pgdbi]);
+// const pluginHook = makePluginHook([pgdbi]);
 
 app.use(express.static("dist"));
 
@@ -17,9 +17,9 @@ const schema = postgraphile(
   process.env.POSTGRES_CONNECTION,
   process.env.SCHEMATA_TO_GRAPHQL.split(","),
   {
-    pluginHook,
+    // pluginHook,
     enableCors: process.env.ENABLE_CORS === 'true',
-    enablePgdbi: process.env.ENABLE_PGDBI === 'true',
+    // enablePgdbi: process.env.ENABLE_PGDBI === 'true',
     pgDefaultRole: process.env.PG_DEFAULT_ROLE,
     jwtPgTypeIdentifier: process.env.JWT_PG_TYPE_IDENTIFIER,
     jwtSecret: process.env.JWT_SECRET,

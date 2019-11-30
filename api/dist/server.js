@@ -2,8 +2,6 @@
 
 var _express = _interopRequireDefault(require("express"));
 
-var _pgdbi = _interopRequireDefault(require("@graphile-contrib/pgdbi"));
-
 var _postgraphile = require("postgraphile");
 
 var _mutationHooks = _interopRequireDefault(require("./mutation-hooks"));
@@ -11,16 +9,17 @@ var _mutationHooks = _interopRequireDefault(require("./mutation-hooks"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // POSTGRAPHILE
-const app = (0, _express.default)();
-const pluginHook = (0, _postgraphile.makePluginHook)([_pgdbi.default]);
+// import pgdbi from "@graphile-contrib/pgdbi";
+const app = (0, _express.default)(); // const pluginHook = makePluginHook([pgdbi]);
+
 app.use(_express.default.static("dist"));
 app.get("/", (req, res) => {
   res.redirect("/dist/index.html");
 });
 const schema = (0, _postgraphile.postgraphile)(process.env.POSTGRES_CONNECTION, process.env.SCHEMATA_TO_GRAPHQL.split(","), {
-  pluginHook,
+  // pluginHook,
   enableCors: process.env.ENABLE_CORS === 'true',
-  enablePgdbi: process.env.ENABLE_PGDBI === 'true',
+  // enablePgdbi: process.env.ENABLE_PGDBI === 'true',
   pgDefaultRole: process.env.PG_DEFAULT_ROLE,
   jwtPgTypeIdentifier: process.env.JWT_PG_TYPE_IDENTIFIER,
   jwtSecret: process.env.JWT_SECRET,

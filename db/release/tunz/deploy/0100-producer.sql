@@ -8,7 +8,7 @@ BEGIN;
     app_tenant_id bigint NOT NULL,
     created_at timestamp NOT NULL DEFAULT current_timestamp,
     updated_at timestamp NOT NULL,
-    recording_session_id bigint NOT NULL,
+    studio_session_id bigint NOT NULL,
     contact_id bigint NOT NULL,
     note text,
     CONSTRAINT pk_producer PRIMARY KEY (id)
@@ -18,7 +18,7 @@ BEGIN;
   --||--
   ALTER TABLE tunz.producer ADD CONSTRAINT fk_producer_contact FOREIGN KEY ( contact_id ) REFERENCES org.contact( id );
   --||--
-  ALTER TABLE tunz.producer ADD CONSTRAINT fk_producer_recording_session FOREIGN KEY ( recording_session_id ) REFERENCES tunz.recording_session( id );
+  ALTER TABLE tunz.producer ADD CONSTRAINT fk_producer_studio_session FOREIGN KEY ( studio_session_id ) REFERENCES tunz.studio_session( id );
 
   --||--
   CREATE FUNCTION tunz.fn_timestamp_update_producer() RETURNS trigger AS $$

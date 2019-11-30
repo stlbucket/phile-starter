@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@graphile-contrib/pgdbi": "^1.0.9-alpha.49",
+    "@graphile-contrib/pgdbi": "^1.0.9-alpha.50",
     "apollo-engine": "^1.1.2",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",

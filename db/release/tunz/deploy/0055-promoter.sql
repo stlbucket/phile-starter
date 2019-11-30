@@ -18,7 +18,7 @@ BEGIN;
   --||--
   ALTER TABLE tunz.promoter ADD CONSTRAINT fk_promoter_contact FOREIGN KEY ( contact_id ) REFERENCES org.contact( id );
   --||--
-  ALTER TABLE tunz.promoter ADD CONSTRAINT fk_booker_show FOREIGN KEY ( show_id ) REFERENCES tunz.show( id );
+  ALTER TABLE tunz.promoter ADD CONSTRAINT fk_promoter_show FOREIGN KEY ( show_id ) REFERENCES tunz.show( id );
 
   --||--
   CREATE FUNCTION tunz.fn_timestamp_update_promoter() RETURNS trigger AS $$

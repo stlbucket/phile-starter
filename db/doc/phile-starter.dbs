@@ -343,6 +343,64 @@
 			</fk>
 		</table>
 	</schema>
+	<schema name="graphile_worker" catalogname="pg_phile_starter" schemaname="graphile_worker" >
+		<table name="job_queues" >
+			<column name="queue_name" type="text" decimal="0" jt="12" mandatory="y" />
+			<column name="job_count" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="locked_at" type="timestamptz" length="35" decimal="6" jt="93" />
+			<column name="locked_by" type="text" decimal="0" jt="12" />
+			<index name="job_queues_pkey" unique="PRIMARY_KEY" >
+				<column name="queue_name" />
+			</index>
+		</table>
+		<table name="jobs" >
+			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" autoincrement="y" />
+			<column name="queue_name" type="text" decimal="0" jt="12" mandatory="y" >
+				<defo>(gen_random_uuid())::text</defo>
+			</column>
+			<column name="task_identifier" type="text" decimal="0" jt="12" mandatory="y" />
+			<column name="payload" type="json" decimal="0" jt="2000" mandatory="y" >
+				<defo>&#039;{}&#039;::json</defo>
+			</column>
+			<column name="priority" type="integer" length="10" decimal="0" jt="4" mandatory="y" >
+				<defo>0</defo>
+			</column>
+			<column name="run_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="attempts" type="integer" length="10" decimal="0" jt="4" mandatory="y" >
+				<defo>0</defo>
+			</column>
+			<column name="max_attempts" type="integer" length="10" decimal="0" jt="4" mandatory="y" >
+				<defo>25</defo>
+			</column>
+			<column name="last_error" type="text" decimal="0" jt="12" />
+			<column name="created_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<column name="updated_at" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<index name="jobs_pkey" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<index name="jobs_priority_run_at_id_idx" unique="NORMAL" >
+				<column name="priority" />
+				<column name="run_at" />
+				<column name="id" />
+			</index>
+		</table>
+		<table name="migrations" >
+			<column name="id" type="integer" length="10" decimal="0" jt="4" mandatory="y" />
+			<column name="ts" type="timestamptz" length="35" decimal="6" jt="93" mandatory="y" >
+				<defo>now()</defo>
+			</column>
+			<index name="migrations_pkey" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<sequence name="jobs_id_seq" start="1" />
+	</schema>
 	<schema name="msg" catalogname="phile_starter" schemaname="msg" >
 		<table name="message" >
 			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
@@ -1262,6 +1320,28 @@
 				<fk_column name="repetoire_id" pk="id" />
 			</fk>
 		</table>
+		<table name="band_member" >
+			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<defo>shard_1.id_generator()</defo>
+			</column>
+			<column name="app_tenant_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="created_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" >
+				<defo>CURRENT_TIMESTAMP</defo>
+			</column>
+			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
+			<column name="band_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="musician_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="note" type="text" decimal="0" jt="12" />
+			<index name="pk_band_member" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_band_member_band" to_schema="tunz" to_table="band" >
+				<fk_column name="band_id" pk="id" />
+			</fk>
+			<fk name="fk_band_member_musician" to_schema="tunz" to_table="musician" >
+				<fk_column name="musician_id" pk="id" />
+			</fk>
+		</table>
 		<table name="booker" >
 			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<defo>shard_1.id_generator()</defo>
@@ -1331,14 +1411,14 @@
 				<defo>CURRENT_TIMESTAMP</defo>
 			</column>
 			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
-			<column name="recording_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="contact_id" type="bigint" length="19" decimal="0" jt="-5" />
 			<column name="note" type="text" decimal="0" jt="12" />
+			<column name="studio_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<index name="pk_mastering_engineer" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
-			<fk name="fk_mastering_engineer_recording_session" to_schema="tunz" to_table="recording_session" >
-				<fk_column name="recording_session_id" pk="id" />
+			<fk name="fk_mastering_engineer_studio_session" to_schema="tunz" to_table="studio_session" >
+				<fk_column name="studio_session_id" pk="id" />
 			</fk>
 		</table>
 		<table name="mixing_engineer" >
@@ -1350,14 +1430,14 @@
 				<defo>CURRENT_TIMESTAMP</defo>
 			</column>
 			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
-			<column name="recording_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="contact_id" type="bigint" length="19" decimal="0" jt="-5" />
 			<column name="note" type="text" decimal="0" jt="12" />
+			<column name="studio_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<index name="pk_mixing_engineer" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
-			<fk name="fk_mixing_engineer_recording_session" to_schema="tunz" to_table="recording_session" >
-				<fk_column name="recording_session_id" pk="id" />
+			<fk name="fk_mixing_engineer_studio_session" to_schema="tunz" to_table="studio_session" >
+				<fk_column name="studio_session_id" pk="id" />
 			</fk>
 		</table>
 		<table name="musician" >
@@ -1369,7 +1449,6 @@
 				<defo>CURRENT_TIMESTAMP</defo>
 			</column>
 			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
-			<column name="band_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="contact_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="note" type="text" decimal="0" jt="12" />
 			<column name="repetoire_id" type="bigint" length="19" decimal="0" jt="-5" />
@@ -1379,11 +1458,11 @@
 			<index name="musician_repetoire_id_key" unique="UNIQUE" >
 				<column name="repetoire_id" />
 			</index>
-			<fk name="fk_musician_repetoire" to_schema="tunz" to_table="repetoire" >
+			<index name="musician_contact_id_key" unique="UNIQUE" >
+				<column name="contact_id" />
+			</index>
+			<fk name="fk_musician_repetoire_0" virtual="y" to_schema="tunz" to_table="repetoire" >
 				<fk_column name="repetoire_id" pk="id" />
-			</fk>
-			<fk name="fk_musician_band" to_schema="tunz" to_table="band" >
-				<fk_column name="band_id" pk="id" />
 			</fk>
 		</table>
 		<table name="musician_instrument" >
@@ -1462,14 +1541,14 @@
 				<defo>CURRENT_TIMESTAMP</defo>
 			</column>
 			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
-			<column name="recording_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="contact_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="note" type="text" decimal="0" jt="12" />
+			<column name="studio_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<index name="pk_producer" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
-			<fk name="fk_producer_recording_session" to_schema="tunz" to_table="recording_session" >
-				<fk_column name="recording_session_id" pk="id" />
+			<fk name="fk_producer_studio_session" to_schema="tunz" to_table="studio_session" >
+				<fk_column name="studio_session_id" pk="id" />
 			</fk>
 		</table>
 		<table name="promoter" >
@@ -1509,11 +1588,15 @@
 			<column name="description" type="text" decimal="0" jt="12" />
 			<column name="bpm" type="integer" length="10" decimal="0" jt="4" />
 			<column name="lyrics" type="text" decimal="0" jt="12" />
+			<column name="studio_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<index name="pk_recording" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
 			<fk name="fk_recording_song" to_schema="tunz" to_table="song" >
 				<fk_column name="song_id" pk="id" />
+			</fk>
+			<fk name="fk_recording_studio_session" to_schema="tunz" to_table="studio_session" >
+				<fk_column name="studio_session_id" pk="id" />
 			</fk>
 		</table>
 		<table name="recording_engineer" >
@@ -1525,17 +1608,17 @@
 				<defo>CURRENT_TIMESTAMP</defo>
 			</column>
 			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
-			<column name="recording_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="contact_id" type="bigint" length="19" decimal="0" jt="-5" />
 			<column name="note" type="text" decimal="0" jt="12" />
+			<column name="studio_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<index name="pk_recording_engineer" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
-			<fk name="fk_recording_engineer_recording_session" to_schema="tunz" to_table="recording_session" >
-				<fk_column name="recording_session_id" pk="id" />
+			<fk name="fk_recording_engineer_studio_session" to_schema="tunz" to_table="studio_session" >
+				<fk_column name="studio_session_id" pk="id" />
 			</fk>
 		</table>
-		<table name="recording_session" >
+		<table name="recording_track" >
 			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<defo>shard_1.id_generator()</defo>
 			</column>
@@ -1544,37 +1627,18 @@
 				<defo>CURRENT_TIMESTAMP</defo>
 			</column>
 			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
-			<column name="session_start" type="timestamp" length="29" decimal="6" jt="93" />
-			<column name="session_end" type="timestamp" length="29" decimal="6" jt="93" />
-			<column name="name" type="text" decimal="0" jt="12" />
 			<column name="recording_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
-			<column name="recording_studio_id" type="bigint" length="19" decimal="0" jt="-5" />
-			<index name="pk_recording_session" unique="PRIMARY_KEY" >
+			<column name="note" type="text" decimal="0" jt="12" />
+			<column name="track_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<index name="pk_recording_track" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
-			<fk name="fk_recording_session_recording" to_schema="tunz" to_table="recording" >
+			<fk name="fk_recording_track_recording" to_schema="tunz" to_table="recording" >
 				<fk_column name="recording_id" pk="id" />
 			</fk>
-			<fk name="fk_recording_session_recording_studio" to_schema="tunz" to_table="recording_studio" >
-				<fk_column name="recording_studio_id" pk="id" />
+			<fk name="fk_recording_track_track" to_schema="tunz" to_table="track" >
+				<fk_column name="track_id" pk="id" />
 			</fk>
-		</table>
-		<table name="recording_studio" >
-			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
-				<defo>shard_1.id_generator()</defo>
-			</column>
-			<column name="app_tenant_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
-			<column name="created_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" >
-				<defo>CURRENT_TIMESTAMP</defo>
-			</column>
-			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
-			<column name="external_id" type="text" decimal="0" jt="12" />
-			<column name="organization_id" type="bigint" length="19" decimal="0" jt="-5" />
-			<column name="location_id" type="bigint" length="19" decimal="0" jt="-5" />
-			<column name="facility_id" type="bigint" length="19" decimal="0" jt="-5" />
-			<index name="pk_recording_studio" unique="PRIMARY_KEY" >
-				<column name="id" />
-			</index>
 		</table>
 		<table name="release" >
 			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
@@ -1676,25 +1740,6 @@
 				<column name="id" />
 			</index>
 		</table>
-		<table name="songwriter" >
-			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
-				<defo>shard_1.id_generator()</defo>
-			</column>
-			<column name="app_tenant_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
-			<column name="created_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" >
-				<defo>CURRENT_TIMESTAMP</defo>
-			</column>
-			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
-			<column name="song_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
-			<column name="contact_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
-			<column name="note" type="text" decimal="0" jt="12" />
-			<index name="pk_songwriter" unique="PRIMARY_KEY" >
-				<column name="id" />
-			</index>
-			<fk name="fk_songwriter_song" to_schema="tunz" to_table="song" >
-				<fk_column name="song_id" pk="id" />
-			</fk>
-		</table>
 		<table name="sound_person" >
 			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<defo>shard_1.id_generator()</defo>
@@ -1714,6 +1759,43 @@
 				<fk_column name="show_id" pk="id" />
 			</fk>
 		</table>
+		<table name="studio" >
+			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<defo>shard_1.id_generator()</defo>
+			</column>
+			<column name="app_tenant_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="created_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" >
+				<defo>CURRENT_TIMESTAMP</defo>
+			</column>
+			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
+			<column name="external_id" type="text" decimal="0" jt="12" />
+			<column name="organization_id" type="bigint" length="19" decimal="0" jt="-5" />
+			<column name="location_id" type="bigint" length="19" decimal="0" jt="-5" />
+			<column name="facility_id" type="bigint" length="19" decimal="0" jt="-5" />
+			<index name="pk_studio" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+		</table>
+		<table name="studio_session" >
+			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<defo>shard_1.id_generator()</defo>
+			</column>
+			<column name="app_tenant_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="created_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" >
+				<defo>CURRENT_TIMESTAMP</defo>
+			</column>
+			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
+			<column name="session_start" type="timestamp" length="29" decimal="6" jt="93" />
+			<column name="session_end" type="timestamp" length="29" decimal="6" jt="93" />
+			<column name="name" type="text" decimal="0" jt="12" />
+			<column name="studio_id" type="bigint" length="19" decimal="0" jt="-5" />
+			<index name="pk_studio_session" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_studio_session_studio" to_schema="tunz" to_table="studio" >
+				<fk_column name="studio_id" pk="id" />
+			</fk>
+		</table>
 		<table name="track" >
 			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
 				<defo>shard_1.id_generator()</defo>
@@ -1723,20 +1805,20 @@
 				<defo>CURRENT_TIMESTAMP</defo>
 			</column>
 			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
-			<column name="recording_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="note" type="text" decimal="0" jt="12" />
 			<column name="instrument_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<column name="status" type="&quot;track_status&quot;" decimal="0" jt="12" mandatory="y" >
 				<defo>&#039;Recorded&#039;::tunz.track_status</defo>
 			</column>
+			<column name="studio_session_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
 			<index name="pk_track" unique="PRIMARY_KEY" >
 				<column name="id" />
 			</index>
 			<fk name="fk_track_instrument" to_schema="tunz" to_table="instrument" >
 				<fk_column name="instrument_id" pk="id" />
 			</fk>
-			<fk name="fk_track_recording_session" to_schema="tunz" to_table="recording_session" >
-				<fk_column name="recording_session_id" pk="id" />
+			<fk name="fk_track_studio_session" to_schema="tunz" to_table="studio_session" >
+				<fk_column name="studio_session_id" pk="id" />
 			</fk>
 		</table>
 		<table name="venue" >
@@ -1756,6 +1838,106 @@
 				<column name="id" />
 			</index>
 		</table>
+		<table name="writing_credit" >
+			<column name="id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" >
+				<defo>shard_1.id_generator()</defo>
+			</column>
+			<column name="app_tenant_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="created_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" >
+				<defo>CURRENT_TIMESTAMP</defo>
+			</column>
+			<column name="updated_at" type="timestamp" length="29" decimal="6" jt="93" mandatory="y" />
+			<column name="note" type="text" decimal="0" jt="12" />
+			<column name="song_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<column name="contact_id" type="bigint" length="19" decimal="0" jt="-5" mandatory="y" />
+			<index name="pk_writing_credit" unique="PRIMARY_KEY" >
+				<column name="id" />
+			</index>
+			<fk name="fk_writing_credit_song" to_schema="tunz" to_table="song" >
+				<fk_column name="song_id" pk="id" />
+			</fk>
+		</table>
+		<trigger name="tg_timestamp_update_band" table="band" id="Trigger_ceaa7a" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_band BEFORE INSERT OR UPDATE ON tunz.band FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_band()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_band_member" table="band_member" id="Trigger_52e44ce" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_band_member BEFORE INSERT OR UPDATE ON tunz.band_member FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_band_member()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_booker" table="booker" id="Trigger_470dbbf" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_booker BEFORE INSERT OR UPDATE ON tunz.booker FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_booker()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_booking" table="booking" id="Trigger_75435b" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_booking BEFORE INSERT OR UPDATE ON tunz.booking FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_booking()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_instrument" table="instrument" id="Trigger_2b3ca60" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_instrument BEFORE INSERT OR UPDATE ON tunz.instrument FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_instrument()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_mastering_engineer" table="mastering_engineer" id="Trigger_54a676f" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_mastering_engineer BEFORE INSERT OR UPDATE ON tunz.mastering_engineer FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_mastering_engineer()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_mixing_engineer" table="mixing_engineer" id="Trigger_1be40ad" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_mixing_engineer BEFORE INSERT OR UPDATE ON tunz.mixing_engineer FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_mixing_engineer()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_musician" table="musician" id="Trigger_2a666c4" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_musician BEFORE INSERT OR UPDATE ON tunz.musician FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_musician()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_musician_instrument" table="musician_instrument" id="Trigger_2baadbd" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_musician_instrument BEFORE INSERT OR UPDATE ON tunz.musician_instrument FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_musician_instrument()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_musician_track" table="musician_track" id="Trigger_16d74b3" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_musician_track BEFORE INSERT OR UPDATE ON tunz.musician_track FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_musician_track()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_playlist" table="playlist" id="Trigger_3564118" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_playlist BEFORE INSERT OR UPDATE ON tunz.playlist FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_playlist()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_producer" table="producer" id="Trigger_32f4460" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_producer BEFORE INSERT OR UPDATE ON tunz.producer FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_producer()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_promoter" table="promoter" id="Trigger_46f9354" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_promoter BEFORE INSERT OR UPDATE ON tunz.promoter FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_promoter()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_recording" table="recording" id="Trigger_527b731" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_recording BEFORE INSERT OR UPDATE ON tunz.recording FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_recording()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_recording_engineer" table="recording_engineer" id="Trigger_48e56a" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_recording_engineer BEFORE INSERT OR UPDATE ON tunz.recording_engineer FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_recording_engineer()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_recording_track" table="recording_track" id="Trigger_280bc6c" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_recording_track BEFORE INSERT OR UPDATE ON tunz.recording_track FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_recording_track()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_release" table="release" id="Trigger_14dbc39" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_release BEFORE INSERT OR UPDATE ON tunz.release FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_release()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_repetoire" table="repetoire" id="Trigger_52b6c70" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_repetoire BEFORE INSERT OR UPDATE ON tunz.repetoire FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_repetoire()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_repetoire_song" table="repetoire_song" id="Trigger_2cbd3d6" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_repetoire_song BEFORE INSERT OR UPDATE ON tunz.repetoire_song FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_repetoire_song()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_show" table="show" id="Trigger_5ad9eb3" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_show BEFORE INSERT OR UPDATE ON tunz.show FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_show()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_song" table="song" id="Trigger_1c62156" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_song BEFORE INSERT OR UPDATE ON tunz.song FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_song()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_sound_person" table="sound_person" id="Trigger_31e16e1" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_sound_person BEFORE INSERT OR UPDATE ON tunz.sound_person FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_sound_person()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_studio" table="studio" id="Trigger_45902a9" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_studio BEFORE INSERT OR UPDATE ON tunz.studio FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_studio()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_studio_session" table="studio_session" id="Trigger_5d40021" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_studio_session BEFORE INSERT OR UPDATE ON tunz.studio_session FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_studio_session()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_track" table="track" id="Trigger_1b78f7a" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_track BEFORE INSERT OR UPDATE ON tunz.track FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_track()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_venue" table="venue" id="Trigger_15600ff" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_venue BEFORE INSERT OR UPDATE ON tunz.venue FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_venue()]]></string>
+		</trigger>
+		<trigger name="tg_timestamp_update_writing_credit" table="writing_credit" id="Trigger_59ecf94" isSystem="false" >
+			<string><![CDATA[CREATE TRIGGER tg_timestamp_update_writing_credit BEFORE INSERT OR UPDATE ON tunz.writing_credit FOR EACH ROW EXECUTE PROCEDURE tunz.fn_timestamp_update_writing_credit()]]></string>
+		</trigger>
 	</schema>
 	<connector name="pg_phile_starter" database="PostgreSQL" driver_class="org.postgresql.Driver" driver_jar="postgresql-42.2.5.jar" driver_desc="Standard" host="0.0.0.0" port="5432" instance="pg_phile_starter" user="postgres" passwd="MTIzNA==" />
 	<layout name="app" id="Layout_5771805" show_relation="columns" >
@@ -1803,6 +1985,11 @@
 			<entity schema="evt" name="evt_type" />
 			<entity schema="evt" name="evt_type_subscriber" />
 		</group>
+	</layout>
+	<layout name="graphile_worker" id="Layout_cbb881" show_relation="columns" >
+		<entity schema="graphile_worker" name="job_queues" color="3986C1" x="48" y="112" />
+		<entity schema="graphile_worker" name="jobs" color="3986C1" x="224" y="80" />
+		<entity schema="graphile_worker" name="migrations" color="3986C1" x="432" y="48" />
 	</layout>
 	<layout name="msg" id="Layout_4f4c2d7" show_relation="columns" >
 		<entity schema="msg" name="message" color="FF9999" x="48" y="80" />
@@ -1878,42 +2065,45 @@
 		</group>
 	</layout>
 	<layout name="tunz" id="Layout_3e88073" show_relation="columns" >
-		<entity schema="tunz" name="recording_session" color="CC6633" x="1408" y="416" />
-		<entity schema="tunz" name="booking" color="996699" x="288" y="656" />
-		<entity schema="tunz" name="show" color="996699" x="48" y="432" />
-		<entity schema="tunz" name="venue" color="996699" x="288" y="176" />
-		<entity schema="tunz" name="playlist" color="996699" x="288" y="976" />
-		<entity schema="tunz" name="instrument" color="669999" x="848" y="96" />
-		<entity schema="tunz" name="musician_instrument" color="669999" x="544" y="96" />
-		<entity schema="tunz" name="band" color="669999" x="544" y="496" />
-		<entity schema="tunz" name="musician_track" color="CC6633" x="1168" y="192" />
-		<entity schema="tunz" name="track" color="CC6633" x="1392" y="80" />
-		<entity schema="tunz" name="recording_studio" color="CC6633" x="1616" y="784" />
-		<entity schema="tunz" name="release" color="CC6633" x="1376" y="896" />
-		<entity schema="tunz" name="recording" color="CC6633" x="1120" y="864" />
-		<entity schema="tunz" name="musician" color="669999" x="752" y="288" />
-		<entity schema="tunz" name="mastering_engineer" color="CC6633" x="1600" y="176" />
-		<entity schema="tunz" name="recording_engineer" color="CC6633" x="1616" y="400" />
-		<entity schema="tunz" name="mixing_engineer" color="CC6633" x="1616" y="592" />
-		<entity schema="tunz" name="promoter" color="996699" x="80" y="112" />
-		<entity schema="tunz" name="booker" color="996699" x="320" y="432" />
-		<entity schema="tunz" name="sound_person" color="996699" x="48" y="720" />
-		<entity schema="tunz" name="producer" color="CC6633" x="1152" y="448" />
-		<entity schema="tunz" name="repetoire_song" color="669999" x="896" y="480" />
-		<entity schema="tunz" name="repetoire" color="669999" x="720" y="672" />
-		<entity schema="tunz" name="song" color="669999" x="864" y="1008" />
-		<entity schema="tunz" name="songwriter" color="669999" x="544" y="784" />
+		<entity schema="tunz" name="booking" color="996699" x="272" y="624" />
+		<entity schema="tunz" name="show" color="996699" x="48" y="400" />
+		<entity schema="tunz" name="venue" color="996699" x="272" y="144" />
+		<entity schema="tunz" name="playlist" color="996699" x="272" y="944" />
+		<entity schema="tunz" name="instrument" color="669999" x="912" y="96" />
+		<entity schema="tunz" name="promoter" color="996699" x="64" y="80" />
+		<entity schema="tunz" name="booker" color="996699" x="304" y="400" />
+		<entity schema="tunz" name="sound_person" color="996699" x="48" y="688" />
+		<entity schema="tunz" name="band" color="669999" x="544" y="512" />
+		<entity schema="tunz" name="band_member" color="669999" x="544" y="304" />
+		<entity schema="tunz" name="repetoire" color="669999" x="816" y="528" />
+		<entity schema="tunz" name="musician" color="669999" x="880" y="272" />
+		<entity schema="tunz" name="repetoire_song" color="669999" x="864" y="784" />
+		<entity schema="tunz" name="recording_engineer" color="CC6633" x="1824" y="448" />
+		<entity schema="tunz" name="studio_session" color="CC6633" x="1600" y="496" />
+		<entity schema="tunz" name="studio" color="CC6633" x="1600" y="176" />
+		<entity schema="tunz" name="mixing_engineer" color="CC6633" x="1824" y="640" />
+		<entity schema="tunz" name="mastering_engineer" color="CC6633" x="1824" y="256" />
+		<entity schema="tunz" name="track" color="CC6633" x="1360" y="144" />
+		<entity schema="tunz" name="musician_track" color="CC6633" x="1104" y="272" />
+		<entity schema="tunz" name="recording_track" color="CC6633" x="1312" y="464" />
+		<entity schema="tunz" name="release" color="CC6633" x="1120" y="640" />
+		<entity schema="tunz" name="producer" color="CC6633" x="1616" y="944" />
+		<entity schema="tunz" name="recording" color="CC6633" x="1392" y="880" />
+		<entity schema="tunz" name="writing_credit" color="669999" x="560" y="752" />
+		<entity schema="tunz" name="song" color="669999" x="640" y="976" />
+		<entity schema="tunz" name="musician_instrument" color="669999" x="576" y="80" />
 		<group name="record" color="CC6633" >
 			<entity schema="tunz" name="mastering_engineer" />
 			<entity schema="tunz" name="mixing_engineer" />
 			<entity schema="tunz" name="producer" />
-			<entity schema="tunz" name="recording_studio" />
-			<entity schema="tunz" name="recording_session" />
 			<entity schema="tunz" name="track" />
 			<entity schema="tunz" name="recording_engineer" />
 			<entity schema="tunz" name="recording" />
 			<entity schema="tunz" name="release" />
 			<entity schema="tunz" name="musician_track" />
+			<entity schema="tunz" name="studio" />
+			<entity schema="tunz" name="studio_session" />
+			<entity schema="tunz" name="recording_track" />
 		</group>
 		<group name="perform" color="996699" >
 			<entity schema="tunz" name="booking" />
@@ -1926,13 +2116,14 @@
 		</group>
 		<group name="create" color="669999" >
 			<entity schema="tunz" name="song" />
-			<entity schema="tunz" name="songwriter" />
 			<entity schema="tunz" name="musician" />
 			<entity schema="tunz" name="band" />
 			<entity schema="tunz" name="musician_instrument" />
 			<entity schema="tunz" name="instrument" />
 			<entity schema="tunz" name="repetoire" />
 			<entity schema="tunz" name="repetoire_song" />
+			<entity schema="tunz" name="band_member" />
+			<entity schema="tunz" name="writing_credit" />
 		</group>
 	</layout>
 </project>
