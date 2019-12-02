@@ -23,7 +23,7 @@ also, you will need to install at least the postgres client on your local machin
 after installing the above:
 
 ```
-git clone git@ssh.dev.azure.com:v3/dauntlessinc/phile-starter/phile-starter
+git clone git@github.com:stlbucket/phile-starter.git
 
 cp ansible/config.ex.yml > ansible/config.yml
 ```
