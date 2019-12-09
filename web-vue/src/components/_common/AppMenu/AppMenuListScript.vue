@@ -6,6 +6,7 @@ export default {
   methods: {
     appSelected (app) {
       this.$router.push({name: app.routeName})
+     this.$eventHub.$emit('app-selected');
     },
   },
   computed: {
@@ -48,9 +49,9 @@ export default {
           iconKey: 'people'
         },
         {
-          key: 'project-manager',
-          name: 'Project Manager',
-          routeName: 'project-manager',
+          key: 'lcb-traceability',
+          name: 'LCB Traceability',
+          routeName: 'lcb-traceability',
           iconKey: 'hot_tub'
         }
       ]

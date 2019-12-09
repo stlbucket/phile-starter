@@ -5,7 +5,7 @@
       :headers="headers"
       :columns="columns"
       :items="items"
-      hide-actions
+      hide-default-footer
     >
       <template slot="items" slot-scope="props">
         <td 
@@ -48,7 +48,7 @@ export default {
       return this.collection.__typename.replace('Connection', '')
     },
     items () {
-      console.log('coll', this.collection)
+    //  console.log('coll', this.collection)
       return this.collection.nodes
     },
     headers () {

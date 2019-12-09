@@ -1,0 +1,24 @@
+query LcbLookupSets{
+  inventoryTypes: allInventoryTypes(
+    orderBy: ID_ASC
+  ) {
+    nodes {
+      id
+      name
+      description
+      units
+      canConvertTo: conversionRulesByFromTypeId {
+        nodes {
+          id
+          toTypeId
+        }
+      }
+      canConvertFrom: conversionRulesByToTypeId {
+        nodes {
+          id
+          fromTypeId
+        }
+      }
+    }
+  }
+}

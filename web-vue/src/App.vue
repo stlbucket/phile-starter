@@ -1,29 +1,54 @@
 <template>
-  <div id="app">
-    <v-app id="inspire" dark>
+  <v-app id="inspire"
+  >
+ 
+    <v-app-bar
+      app
+      clipped-right
+    >
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
+      <current-app-user-contact></current-app-user-contact>
+      <v-spacer></v-spacer>
+      <login-manager></login-manager>
+      <v-spacer></v-spacer>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+    </v-app-bar>
+
+    <v-hover v-slot:default="{ hover }">
       <v-navigation-drawer
-        clipped
-        fixed
         v-model="drawer"
+        :clipped="true"
         app
+        right
+        :width="hover ? 500 : 200"
+        disable-route-watcher
       >
         <app-menu></app-menu>
       </v-navigation-drawer>
-      <v-toolbar app fixed clipped-left>
-        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <v-toolbar-title><router-link :to="{ name: 'home'}">Phile-Starter</router-link></v-toolbar-title>
-        <v-spacer></v-spacer>
-        <current-app-user-contact></current-app-user-contact>
-        <login-manager></login-manager>
-      </v-toolbar>
-      <v-content>
+    </v-hover>
+
+   <v-content
+    >
+      <v-container
+        justify-start
+        ma-0
+        pa-0
+      >
         <router-view></router-view>
-      </v-content>
-      <v-footer app fixed>
-        <span>&copy; 2017</span>
-      </v-footer>
-    </v-app>
-  </div></template>
+      </v-container>
+    </v-content>
+
+    <v-footer app>
+      <span>&copy; 2019</span>
+    </v-footer>
+  </v-app>
+</template>
 
 <script>
 import AppMenu from '@/components/_common/AppMenu/AppMenuListVuetify'
@@ -41,6 +66,9 @@ export default {
   computed: {
   },
   methods: {
+    closeDrawer () {
+      this.drawer = false
+    }
   },
   data () {
     return {
@@ -53,13 +81,16 @@ export default {
       query: introspection,
       networkPolicy: 'fetch-only',
       update (data) {
-        console.log('app', data)
         const schema = data.__schema || {types: []}
-        const types = schema.types
-        console.log('types', types)
         this.$store.commit('setGraphqlTypes', schema.types)
       }
     }
+  },
+  created() {
+      this.$eventHub.$on('app-selected', this.closeDrawer);
+  },
+  beforeDestroy() {
+      this.$eventHub.$off('app-selected');
   }
 }
 </script>
