@@ -1,4 +1,4 @@
-query AppTenantById($id: String!) {
+query AppTenantById($id: BigInt!) {
   appTenantById(id: $id) {
     id
     name

@@ -1,5 +1,5 @@
 query OrganizationById(
-  $id: String!
+  $id: BigInt!
 ) {
   organizationById(id: $id) {
     id

@@ -1,5 +1,5 @@
 query ContactById(
-  $id: String!
+  $id: BigInt!
 ) {
   contactById(id: $id) {
     id

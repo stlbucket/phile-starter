@@ -60,10 +60,10 @@ const schema = (0, _postgraphile.postgraphile)(process.env.POSTGRES_CONNECTION, 
       notLike: "nlike",
       likeInsensitive: "ilike",
       notLikeInsensitive: "nilike"
-    } // exportGqlSchemaPath: './schema/soro.schema',
-    // exportJsonSchemaPath: './schema/soro_schema.json'
+    }
+  } // exportGqlSchemaPath: './schema/soro.schema',
+  // exportJsonSchemaPath: './schema/soro_schema.json'
 
-  }
 });
 app.use(schema); // app.use('/api', api)
 // app.use(function (err, req, res, next) {

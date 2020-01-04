@@ -1,5 +1,5 @@
 query LicenseById(
-  $id: String!
+  $id: BigInt!
 ) {
   licenseById(id: $id) {
     id

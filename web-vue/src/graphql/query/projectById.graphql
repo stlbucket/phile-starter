@@ -1,5 +1,5 @@
 query ProjectById(
-  $id: String!
+  $id: BigInt!
 ) {
   projectById(id: $id) {
     id
