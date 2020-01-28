@@ -1,0 +1,8 @@
+%syntax-version=1.0.0
+%project=quickstart
+%uri=https://github.com/stlbucket/phile-starter/db/quickstart
+
+0010-roles 2020-01-15T01:53:14Z Kevin Burkett <stlbucket@gmail.com> # roles used for ownership, authentication, grant and rls security
+0020-extensions 2020-01-15T02:16:17Z Kevin Burkett <stlbucket@gmail.com> # pg extensions
+0030-phile-starter-schemata [0010-roles] 2020-01-15T02:18:16Z Kevin Burkett <stlbucket@gmail.com> # basic schemas
+0040-anchor-tenant [0030-phile-starter-schemata] 2020-01-15T02:27:13Z Kevin Burkett <stlbucket@gmail.com> # anchor tenant for superadmin user
